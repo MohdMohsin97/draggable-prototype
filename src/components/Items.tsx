@@ -19,27 +19,11 @@ interface ItemProps {
   itemRefs: React.MutableRefObject<{ [key: number]: HTMLDivElement | null }>;
 }
 
-// Custom comparison function for Item component
-const itemPropsAreEqual = (
-  prevProps: Readonly<ItemProps>,
-  nextProps: Readonly<ItemProps>
-): boolean => {
-  return (
-    prevProps.item.x === nextProps.item.x &&
-    prevProps.item.y === nextProps.item.y &&
-    prevProps.item.size === nextProps.item.size &&
-    prevProps.item.emoji === nextProps.item.emoji &&
-    prevProps.item.fontSize === nextProps.item.fontSize &&
-    prevProps.item.id === nextProps.item.id
-  );
-};
-
 const Item = memo<ItemProps>(({ 
   item, 
   onMouseEnter, 
   onMouseLeave, 
   itemRefs,
-  registerItem 
 }) => {
   const itemRef = useRef<HTMLDivElement>(null);
   
@@ -78,10 +62,7 @@ const Item = memo<ItemProps>(({
   const setItemRef = useCallback((el: ItemElement | null) => {
     itemRef.current = el;
     itemRefs.current[item.id] = el;
-    if (registerItem) {
-      registerItem(item.id, el);
-    }
-  }, [item.id, itemRefs, registerItem]);
+  }, [item.id, itemRefs]);
 
   return (
     <div
